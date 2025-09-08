@@ -12,7 +12,7 @@ class PricingEngine(ABC):
     """
 
     @abstractmethod
-    def price(self, option, spot, t):
+    def price(self, option):
         pass
 
     @abstractmethod
