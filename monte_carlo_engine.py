@@ -13,11 +13,11 @@ class MonteCarloEngine(PricingEngine):
     
     def price(self, option: MultiLookOption, r: float, n_paths: int, n_steps: int) -> float:
         
-        if not isinstance(MultiLookOption):
+        if not isinstance(option, MultiLookOption):
             raise ValueError("Multilook option expected")
         
-        self.paths = [self.diffusion.simulate_path(n_steps) for _ in range(n_paths)]
-        payoffs = [option.payoff(path) for path in self.paths]
+        self.paths = [self.diffusion.simulate_path(T=option.expiry, n_steps=n_steps) for _ in range(n_paths)]
+        payoffs    = [option.payoff(path) for path in self.paths]
         T = option.expiry
         
         return np.exp(-r * T) * np.average(payoffs)

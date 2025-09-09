@@ -41,10 +41,23 @@ class MultiLookOption(Option):
     pass
     
     
+@dataclass
 class AsianOption(MultiLookOption): 
-    
-    def payoff(self, spot_fixings: List[float]):
+
+    n_fixings : int   # defines the no. of fixings that are used in the payoff calculation
+
+    def payoff(self, spot_path: np.array):
+        
+        n_points = len(spot_path)
+        
+        if n_points < self.n_fixings:
+            raise ValueError("Spot path has fewer points than required fixings")
+        
+        indices = np.linspace(0, n_points-1, self.n_fixings, dtype=int)
+        fixings = spot_path[indices]
+        avg_spot = np.average(fixings)
+        
         if self.option_type == OptionType.Call:
-            return np.maximum(np.average(spot_fixings) - self.strike, 0)
-        return np.maximum(self.strike - np.average(spot_fixings), 0)
+            return np.maximum(avg_spot - self.strike, 0)
+        return np.maximum(self.strike - avg_spot, 0)
         

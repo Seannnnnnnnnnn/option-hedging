@@ -15,23 +15,18 @@ class PricingEngine(ABC):
     def price(self, option):
         pass
 
-    @abstractmethod
     def delta(self, option, spot, t):
         pass
 
-    @abstractmethod
     def gamma(self, option, spot, t):
         pass
 
-    @abstractmethod
     def vega(self, option, spot, t):
         pass
 
-    @abstractmethod
     def theta(self, option, spot, t):
         pass
 
-    @abstractmethod
     def rho(self, option, spot, t):
         pass
 
